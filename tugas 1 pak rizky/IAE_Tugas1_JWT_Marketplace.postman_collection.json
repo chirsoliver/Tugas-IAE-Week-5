@@ -1,0 +1,82 @@
+{
+  "info": {
+    "name": "IAE Tugas 1 - JWT Marketplace API",
+    "_postman_id": "ab12cd34-ef56-7890-1234-56789abcdef0",
+    "description": "Collection untuk menguji JWT Marketplace API (IAE Tugas 1 Pak Rizky)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET /items (Public)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/items",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["items"]
+        }
+      }
+    },
+    {
+      "name": "POST /auth/login (Get JWT Token)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"user1@example.com\",\n  \"password\": \"pass123\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/auth/login",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["auth", "login"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT /profile (Protected)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{access_token}}", "type": "text" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Oliver Updated\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/profile",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["profile"]
+        }
+      }
+    }
+  ],
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Simpan token otomatis setelah login",
+          "if (pm.request.url.path.includes('auth') && pm.response.code === 200) {",
+          "  const json = pm.response.json();",
+          "  pm.collectionVariables.set('access_token', json.access_token);",
+          "  console.log('✅ Token saved:', json.access_token);",
+          "}"
+        ]
+      }
+    }
+  ]
+}
